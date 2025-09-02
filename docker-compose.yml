@@ -1,0 +1,29 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: siroko_app
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      - mysql
+  mysql:
+    image: mysql:5.7
+    container_name: siroko_mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: "rootpassword"
+      MYSQL_DATABASE: "checkout"
+      MYSQL_USER: "user"
+      MYSQL_PASSWORD: "password"
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+volumes:
+  mysql_data:
+

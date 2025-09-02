@@ -7,6 +7,10 @@
         "php": ">=8.2",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "doctrine/dbal": "^3",
+        "doctrine/doctrine-bundle": "^2.15",
+        "doctrine/doctrine-migrations-bundle": "^3.4",
+        "doctrine/orm": "^3.5",
         "symfony/console": "7.3.*",
         "symfony/dotenv": "7.3.*",
         "symfony/flex": "^2",
@@ -15,6 +19,13 @@
         "symfony/yaml": "7.3.*"
     },
     "require-dev": {
+        "codeception/codeception": "^5.3",
+        "codeception/module-asserts": "^3.2",
+        "codeception/module-doctrine": "^3.2",
+        "codeception/module-rest": "^3.4",
+        "codeception/module-symfony": "^3.7",
+        "fakerphp/faker": "^1.24",
+        "ramsey/uuid": "^4.9"
     },
     "config": {
         "allow-plugins": {
@@ -27,12 +38,12 @@
     },
     "autoload": {
         "psr-4": {
-            "App\\": "src/"
+            "Siroko\\Checkout\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "App\\Tests\\": "tests/"
+            "Siroko\\Checkout\\Tests\\": "tests/"
         }
     },
     "replace": {
