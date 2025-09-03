@@ -4,10 +4,10 @@
  * Product class
  */
 
-namespace Siroko\Checkout\Carts\Domain\ValueObject;
+namespace BGC\Checkout\Carts\Domain\ValueObject;
 
-use Siroko\Checkout\Carts\Domain\ValueObject\Price;
-use Siroko\Checkout\Shared\Domain\ValueObject\Uuid;
+use BGC\Checkout\Carts\Domain\ValueObject\Price;
+use BGC\Checkout\Shared\Domain\ValueObject\Uuid;
 
 class Product
 {

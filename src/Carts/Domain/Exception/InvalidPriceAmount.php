@@ -1,6 +1,6 @@
 <?php
 
-namespace Siroko\Checkout\Carts\Domain\Exception;
+namespace BGC\Checkout\Carts\Domain\Exception;
 
 use Exception;
 

@@ -1,12 +1,14 @@
 <?php
 
-namespace Siroko\Checkout\Carts\Domain\ValueObject;
+namespace BGC\Checkout\Carts\Domain\ValueObject;
 
 use Exception;
-use Siroko\Checkout\Carts\Domain\Exception\InvalidPriceAmount;
+use BGC\Checkout\Carts\Domain\Exception\InvalidPriceAmount;
 
 class Price
 {
+    private const DEFAULT_CURRENCY = 'EUR';
+
     public function __construct(
         private readonly int $centsAmount,
         private readonly string $currency
@@ -44,7 +46,7 @@ class Price
     public static function sum(Price ...$prices): Price
     {
         $centsAmount = 0;
-        $currency = null;
+        $currency = self::DEFAULT_CURRENCY;
 
         foreach ($prices as $price) {
             if ($currency && $price->currency() != $currency) {

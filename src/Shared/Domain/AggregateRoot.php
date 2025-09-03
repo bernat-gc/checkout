@@ -4,9 +4,9 @@
  * Abstract class for aggregate root entities
  */
 
-namespace Siroko\Checkout\Shared\Domain;
+namespace BGC\Checkout\Shared\Domain;
 
-use Siroko\Checkout\Shared\Domain\Event\DomainEvent;
+use BGC\Checkout\Shared\Domain\Event\DomainEvent;
 
 abstract class AggregateRoot
 {   

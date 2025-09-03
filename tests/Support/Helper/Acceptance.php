@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Siroko\Checkout\Tests\Support\Helper;
+namespace BGC\Checkout\Tests\Support\Helper;
 
 use Codeception\Module;
 use Doctrine\ORM\EntityManagerInterface;

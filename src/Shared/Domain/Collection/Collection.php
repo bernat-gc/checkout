@@ -1,37 +1,52 @@
 <?php
 
-namespace Siroko\Checkout\Shared\Domain\Collection;
+namespace BGC\Checkout\Shared\Domain\Collection;
 
-abstract class Collection
+use BGC\Checkout\Shared\Domain\Exception\ItemNotFoundInCollection;
+use Doctrine\Common\Collections\ArrayCollection;
+
+abstract class Collection extends ArrayCollection
 {
-    protected $items;
-
     abstract protected function itemClass(): string;
 
     public function __construct(
-        ...$items
+        ...$elements
     ) {
-        array_walk($items, [$this, 'ensureItemOfClass']);
+        array_walk($elements, [$this, 'ensureElementOfClass']);
 
-        $this->items = $items;
+        parent::__construct($elements);
     }
 
-    private function ensureItemOfClass($item): void
+    protected function elements(): array
+    {
+        return parent::toArray();
+    }
+
+    private function ensureElementOfClass($element): void
     {
         $class = $this->itemClass();
 
-        if (!($item instanceof $class)) {
+        if (!($element instanceof $class)) {
             throw new InvalidClassForItem(
                 static::class,
                 $this->itemClass(),
-                get_class($item)
+                get_class($element)
             );
         }
     }
 
-    protected function add($item): void
+    public function add($element): void
     {
-        $this->ensureItemOfClass($item);
-        $this->items[] = $item;
+        $this->ensureElementOfClass($element);
+        $this->set((string)$element->id(), $element);
+    }
+
+    public function removeItem(string $elementId): void
+    {
+        $removed = $this->remove($elementId);
+
+        if (!$removed) {
+            throw new ItemNotFoundInCollection();
+        }
     }
 }

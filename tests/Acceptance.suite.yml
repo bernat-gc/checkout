@@ -9,7 +9,7 @@ modules:
         - Asserts
         - Symfony:
             app_path: 'src/'
-            kernel_class: Siroko\Checkout\Kernel
+            kernel_class: BGC\Checkout\Kernel
             environment: 'test'
         - REST:
             depends: Symfony

@@ -1,11 +1,12 @@
 <?php
 
-namespace Siroko\Checkout\Carts\Domain\Collection;
+namespace BGC\Checkout\Carts\Domain\Collection;
 
-use Siroko\Checkout\Carts\Domain\CartItem;
-use Siroko\Checkout\Carts\Domain\ValueObject\Price;
-use Siroko\Checkout\Carts\Domain\ValueObject\Product;
-use Siroko\Checkout\Shared\Domain\Collection\Collection;
+use BGC\Checkout\Carts\Domain\CartItem;
+use BGC\Checkout\Carts\Domain\ValueObject\Price;
+use BGC\Checkout\Carts\Domain\ValueObject\Product;
+use BGC\Checkout\Shared\Domain\Collection\Collection;
+use BGC\Checkout\Shared\Domain\ValueObject\Uuid;
 
 class CartItems extends Collection
 {
@@ -18,7 +19,7 @@ class CartItems extends Collection
     {
         $prices = array_map(
             fn ($item) => $item->getTotalPrice(),
-            $this->items
+            $this->elements()
         );
 
         return Price::sum(...$prices);
@@ -27,7 +28,7 @@ class CartItems extends Collection
     public function findByProduct(Product $product): ?CartItem
     {
         $itemsWithProduct = array_filter(
-            $this->items,
+            $this->elements(),
             fn ($item) => $item->product()->equals($product)
         );
 
@@ -41,7 +42,7 @@ class CartItems extends Collection
     public function findById(Uuid $itemId): ?CartItem
     {
         $itemsWithId = array_filter(
-            $this->items,
+            $this->elements(),
             fn ($item) => $item->id()->equals($itemId)
         );
 
@@ -49,7 +50,7 @@ class CartItems extends Collection
             return null;
         }
 
-        return $itemsWithId[0];
+        return reset($itemsWithId);
     }
 
     public function addItem(CartItem $item): void
@@ -59,17 +60,15 @@ class CartItems extends Collection
         if (!$cartItem) {
             $this->add($item);
         } else {
-            $cartItem->increase($item->quantity);
+            $cartItem->increase($item->quantity());
         }
     }
-
-
 
     public function toArray(): array
     {
         return array_map(
             fn ($item) => $item->toArray(),
-            $this->items
+            $this->elements()
         );
     }
 }

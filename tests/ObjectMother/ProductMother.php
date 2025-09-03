@@ -1,10 +1,10 @@
 <?php
 
-namespace Siroko\Checkout\Tests\ObjectMother;
+namespace BGC\Checkout\Tests\ObjectMother;
 
-use Siroko\Checkout\Carts\Domain\ValueObject\Price;
-use Siroko\Checkout\Carts\Domain\ValueObject\Product;
-use Siroko\Checkout\Shared\Domain\ValueObject\Uuid;
+use BGC\Checkout\Carts\Domain\ValueObject\Price;
+use BGC\Checkout\Carts\Domain\ValueObject\Product;
+use BGC\Checkout\Shared\Domain\ValueObject\Uuid;
 
 class ProductMother
 {

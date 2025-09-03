@@ -1,8 +1,8 @@
 <?php
 
-namespace Siroko\Checkout\Tests\ObjectMother;
+namespace BGC\Checkout\Tests\ObjectMother;
 
-use Siroko\Checkout\Carts\Domain\ValueObject\Price;
+use BGC\Checkout\Carts\Domain\ValueObject\Price;
 
 class PriceMother
 {

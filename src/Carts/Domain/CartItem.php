@@ -4,13 +4,13 @@
  * Cart item class
  */
 
-namespace Siroko\Checkout\Carts\Domain;
+namespace BGC\Checkout\Carts\Domain;
 
 use Exception;
-use Siroko\Checkout\Carts\Domain\Exception\NonPositiveCartItemQuantity;
-use Siroko\Checkout\Carts\Domain\ValueObject\Price;
-use Siroko\Checkout\Carts\Domain\ValueObject\Product;
-use Siroko\Checkout\Shared\Domain\ValueObject\Uuid;
+use BGC\Checkout\Carts\Domain\Exception\NonPositiveCartItemQuantity;
+use BGC\Checkout\Carts\Domain\ValueObject\Price;
+use BGC\Checkout\Carts\Domain\ValueObject\Product;
+use BGC\Checkout\Shared\Domain\ValueObject\Uuid;
 
 class CartItem
 {
@@ -32,6 +32,11 @@ class CartItem
         return $this->getUnitPrice()->multiply($this->quantity);
     }
 
+    public function id(): Uuid
+    {
+        return $this->id;
+    }
+
     public function product(): Product
     {
         return $this->product;
@@ -42,6 +47,12 @@ class CartItem
         return $this->quantity;
     }
 
+    public function modifyQuantity(int $newQuantity): void
+    {
+        $this->ensureQuantityIsPositive($newQuantity);
+        $this->quantity = $newQuantity;
+    }
+
     public function increase(int $quantity): void
     {
         $this->quantity += $quantity;
@@ -49,13 +60,17 @@ class CartItem
 
     public function decrease(int $quantity): void
     {
+        $this->ensureQuantityIsPositive($this->quantity - $quantity);
         $this->quantity -= $quantity;
-        $this->ensureQuantityIsPositive();
     }
 
-    private function ensureQuantityIsPositive()
+    private function ensureQuantityIsPositive(?int $quantity = null): void
     {
-        if ($this->quantity <= 0) {
+        if (!$quantity) {
+            $quantity = $this->quantity;
+        }
+
+        if ($quantity <= 0) {
             throw new NonPositiveCartItemQuantity();
         }
     }

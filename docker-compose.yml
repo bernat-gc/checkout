@@ -3,7 +3,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: siroko_app
+    container_name: app
     ports:
       - "8080:80"
     volumes:
@@ -12,7 +12,7 @@ services:
       - mysql
   mysql:
     image: mysql:5.7
-    container_name: siroko_mysql
+    container_name: mysql
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: "rootpassword"

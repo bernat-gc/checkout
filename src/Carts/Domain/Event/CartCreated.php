@@ -1,8 +1,8 @@
 <?php
 
-namespace Siroko\Checkout\Carts\Domain\Event;
+namespace BGC\Checkout\Carts\Domain\Event;
 
-use Siroko\Checkout\Shared\Domain\Event\DomainEvent;
+use BGC\Checkout\Shared\Domain\Event\DomainEvent;
 
 class CartCreated extends DomainEvent
 {

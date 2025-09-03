@@ -1,6 +1,6 @@
 <?php
 
-namespace Siroko\Checkout;
+namespace BGC\Checkout;
 
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;

@@ -4,7 +4,7 @@
  * Value Object for uuid
  */
 
-namespace Siroko\Checkout\Shared\Domain\ValueObject;
+namespace BGC\Checkout\Shared\Domain\ValueObject;
 
 class Uuid
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Siroko\Checkout\Shared\Domain\Event;
+namespace BGC\Checkout\Shared\Domain\Event;
 
 use DateTimeImmutable;
 

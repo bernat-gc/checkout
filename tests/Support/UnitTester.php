@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Siroko\Checkout\Tests\Support;
+namespace BGC\Checkout\Tests\Support;
 
 /**
  * Inherited Methods
