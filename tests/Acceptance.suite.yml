@@ -6,6 +6,7 @@
 actor: AcceptanceTester
 modules:
     enabled:
+        - BGC\Checkout\Tests\Support\Helper\Acceptance
         - Asserts
         - Symfony:
             app_path: 'src/'
@@ -17,4 +18,3 @@ modules:
         - Doctrine:
             depends: Symfony
             cleanup: true
-

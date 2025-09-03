@@ -1,0 +1,23 @@
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="https://doctrine-project.org/schemas/orm/doctrine-mapping
+                          https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <embeddable name="BGC\Checkout\Carts\Domain\ValueObject\Product">
+      <field name="id"
+             column="id"
+             type="string"
+             nullable="false"
+             length="36"
+      />
+      <field name="description"
+             column="description"
+             type="string"
+             length="50"
+      />
+      <embedded name="price"
+                class="BGC\Checkout\Carts\Domain\ValueObject\Price"
+                column-prefix="price_"
+      />
+    </embeddable>
+</doctrine-mapping>

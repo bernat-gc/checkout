@@ -14,4 +14,12 @@ enum CartStatus: string
             self::Ordered => false,
         };
     }
+
+    public static function fromString(string $value): static
+    {
+        return match($value) {
+            'Shopping' => self::Shopping,
+            'Ordered' => self::Ordered
+        };
+    }
 }

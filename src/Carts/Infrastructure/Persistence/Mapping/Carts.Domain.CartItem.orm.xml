@@ -1,0 +1,28 @@
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="https://doctrine-project.org/schemas/orm/doctrine-mapping
+                          https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+  <entity name="BGC\Checkout\Carts\Domain\CartItem" table="cart_item">
+
+    <id name="id" type="string" length="36"/>
+
+    <embedded name="product"
+              class="BGC\Checkout\Carts\Domain\ValueObject\Product"
+              use-column-prefix="true"
+    />
+
+    <field name="quantity"
+           column="quantity"
+           type="integer"
+    />
+
+    <many-to-one field="cart"
+                 target-entity="BGC\Checkout\Carts\Domain\Cart"
+                 inversed-by="items">
+      <join-column name="cart_id" referenced-column-name="id" nullable="false" />
+    </many-to-one>
+
+  </entity>
+
+</doctrine-mapping>

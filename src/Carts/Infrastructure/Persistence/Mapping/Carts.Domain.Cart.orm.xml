@@ -1,0 +1,37 @@
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="https://doctrine-project.org/schemas/orm/doctrine-mapping
+                          https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+  <entity name="BGC\Checkout\Carts\Domain\Cart" table="cart">
+
+    <id name="id" type="uuid" length="36"/>
+
+    <field name="userId" column="user_id" type="uuid" length="36"/>
+
+    <field name="status" column="status" type="cart_status"/>
+
+    <one-to-many field="items"
+                 target-entity="BGC\Checkout\Carts\Domain\CartItem"
+                 mapped-by="cart">
+    </one-to-many>
+
+    <field name="createdAt" column="created_at" type="datetime_immutable">
+      <options>
+        <option name="default">CURRENT_TIMESTAMP</option>
+      </options>
+    </field>
+
+    <field name="updatedAt" column="updated_at" type="datetime_immutable">
+      <options>
+        <option name="default">CURRENT_TIMESTAMP</option>
+      </options>
+    </field>
+
+    <lifecycle-callbacks>
+      <lifecycle-callback type="prePersist" method="refreshTimestamps"/>
+      <lifecycle-callback type="preUpdate" method="refreshTimestamps"/>
+    </lifecycle-callbacks>
+  </entity>
+
+</doctrine-mapping>

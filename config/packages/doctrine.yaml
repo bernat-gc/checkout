@@ -8,6 +8,9 @@ doctrine:
 
         profiling_collect_backtrace: '%kernel.debug%'
         use_savepoints: true
+        types:
+            uuid: BGC\Checkout\Shared\Infrastructure\Persistence\DBAL\Types\UuidType
+            cart_status: BGC\Checkout\Shared\Infrastructure\Persistence\DBAL\Types\CartStatusType
     orm:
         auto_generate_proxy_classes: true
         enable_lazy_ghost_objects: true
@@ -18,12 +21,11 @@ doctrine:
             Doctrine\DBAL\Platforms\MySQLPlatform: identity
         auto_mapping: true
         mappings:
-            App:
-                type: attribute
+            BGC:
+                type: xml
                 is_bundle: false
-                dir: '%kernel.project_dir%/src/Carts/Domain'
-                prefix: 'BGC\Checkout\Carts\Domain'
-                alias: App
+                dir: '%kernel.project_dir%/src/Carts/Infrastructure/Persistence/Mapping'
+                prefix: 'BGC\Checkout'
         controller_resolver:
             auto_mapping: false
 

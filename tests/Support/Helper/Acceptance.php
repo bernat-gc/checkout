@@ -13,7 +13,7 @@ class Acceptance extends Module
     public function _before(\Codeception\TestInterface $test)
     {
         /** @var EntityManagerInterface $em */
-        $em = $this->getModule('Doctrine2')->_getEntityManager();
+        $em = $this->getModule('Doctrine')->_getEntityManager();
 
         $meta = $em->getMetadataFactory()->getAllMetadata();
         $tool = new SchemaTool($em);
