@@ -1,6 +1,6 @@
 <?php
 
-use Siroko\Checkout\Kernel;
+use BGC\Checkout\Kernel;
 
 require_once dirname(__DIR__).'/vendor/autoload_runtime.php';
 

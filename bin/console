@@ -1,7 +1,7 @@
 #!/usr/bin/env php
 <?php
 
-use Siroko\Checkout\Kernel;
+use BGC\Checkout\Kernel;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 
 if (!is_dir(dirname(__DIR__).'/vendor')) {

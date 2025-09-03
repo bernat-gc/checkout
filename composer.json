@@ -15,7 +15,9 @@
         "symfony/dotenv": "7.3.*",
         "symfony/flex": "^2",
         "symfony/framework-bundle": "7.3.*",
+        "symfony/messenger": "7.3.*",
         "symfony/runtime": "7.3.*",
+        "symfony/validator": "7.3.*",
         "symfony/yaml": "7.3.*"
     },
     "require-dev": {
@@ -38,12 +40,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Siroko\\Checkout\\": "src/"
+            "BGC\\Checkout\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Siroko\\Checkout\\Tests\\": "tests/"
+            "BGC\\Checkout\\Tests\\": "tests/"
         }
     },
     "replace": {

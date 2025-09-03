@@ -1,4 +1,4 @@
-namespace: Siroko\Checkout\Tests
+namespace: BGC\Checkout\Tests
 support_namespace: Support
 paths:
     tests: tests
