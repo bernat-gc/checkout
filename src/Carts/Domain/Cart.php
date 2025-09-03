@@ -20,17 +20,18 @@ use BGC\Checkout\Shared\Domain\AggregateRoot;
 use BGC\Checkout\Shared\Domain\Exception\ItemNotFoundInCollection;
 use BGC\Checkout\Shared\Domain\ValueObject\Uuid;
 use DateTimeImmutable;
+use Doctrine\ORM\PersistentCollection;
 
 class Cart extends AggregateRoot
 {
 	public function __construct(
 		private Uuid $id,
 		private Uuid $userId,
-		private CartItems $items,
-		private CartStatus $status,
-		private DateTimeImmutable $createdAt,
-		private DateTimeImmutable $updatedAt
+		private CartItems|PersistentCollection $items,
+		private CartStatus $status
 	) {
+		parent::__construct();
+
 		$this->record(new CartCreated((string)$id, ['user_id' => (string)$userId]));
 	}
 
@@ -55,6 +56,9 @@ class Cart extends AggregateRoot
 
 	public function items(): CartItems
 	{
+		if ($this->items instanceof PersistentCollection) {
+			$this->items = CartItems::fromArray($this->items->toArray());
+		}
 		return $this->items;
 	}
 
@@ -62,11 +66,12 @@ class Cart extends AggregateRoot
 	{
 		$this->ensureCanBeModified();
 
-		$this->items->addItem($item);
+		$this->items()->addItem($item);
+		$item->setCart($this);
 
 		$this->record(new CartItemsAdded(
 			(string)$this->id,
-			['items' => $this->items->toArray()]
+			['items' => $this->items()->toArray()]
 		));
 	}
 
@@ -75,12 +80,13 @@ class Cart extends AggregateRoot
 		$this->ensureCanBeModified();
 
 		foreach ($items as $item) {
-			$this->items->addItem($item);
+			$this->items()->addItem($item);
+			$item->setCart($this);
 		}
 
 		$this->record(new CartItemsAdded(
 			(string)$this->id,
-			['items' => $this->items->toArray()]
+			['items' => $this->items()->toArray()]
 		));
 	}
 
@@ -88,11 +94,11 @@ class Cart extends AggregateRoot
 	{
 		$this->ensureCanBeModified();
 
-		$this->items->removeItem((string)$cartItemId);
+		$this->items()->removeItem((string)$cartItemId);
 
 		$this->record(new CartItemRemoved(
 			(string)$this->id,
-			['items' => $this->items->toArray()]
+			['items' => $this->items()->toArray()]
 		));
 	}
 
@@ -100,7 +106,7 @@ class Cart extends AggregateRoot
 	{
 		$this->ensureCanBeModified();
 
-		$item = $this->items->findById($itemId);
+		$item = $this->items()->findById($itemId);
 
 		if (!$item) {
 			throw new ItemNotFoundInCollection();
@@ -110,7 +116,7 @@ class Cart extends AggregateRoot
 
 		$this->record(new CartItemsModified(
 			(string)$this->id,
-			['items' => $this->items->toArray()]
+			['items' => $this->items()->toArray()]
 		));
 	}
 

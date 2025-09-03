@@ -1,5 +1,6 @@
-# controllers:
-#     resource:
-#         path: ../src/Controller/
-#         namespace: App\Controller
-#     type: attribute
+cart.create:
+  path: /carts
+  methods: POST
+  controller: BGC\Checkout\Carts\Infrastructure\Controllers\PostCart
+  defaults:
+    _format: json

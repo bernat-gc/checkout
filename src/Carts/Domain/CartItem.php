@@ -14,12 +14,19 @@ use BGC\Checkout\Shared\Domain\ValueObject\Uuid;
 
 class CartItem
 {
+    private ?Cart $cart;
+
     public function __construct(
         private Uuid $id,
         private Product $product,
         private int $quantity
     ) {
         $this->ensureQuantityIsPositive();
+    }
+
+    public function setCart(Cart $cart): void
+    {
+        $this->cart = $cart;
     }
 
     public function getUnitPrice(): Price
