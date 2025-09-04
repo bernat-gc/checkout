@@ -10,6 +10,7 @@ use BGC\Checkout\Carts\Domain\Collection\CartItems;
 use BGC\Checkout\Carts\Domain\ValueObject\CartStatus;
 use BGC\Checkout\Product\Domain\Product;
 use BGC\Checkout\Shared\Domain\ValueObject\Uuid;
+use BGC\Checkout\Tests\ObjectMother\CartItemMother;
 use BGC\Checkout\Tests\ObjectMother\CartMother;
 use BGC\Checkout\Tests\ObjectMother\PriceMother;
 use BGC\Checkout\Tests\ObjectMother\ProductMother;
@@ -62,6 +63,14 @@ class AcceptanceTester extends \Codeception\Actor
         $this->haveHttpHeader('Content-Type', 'application/json');
 
         $this->sendPOST($uri, $body->getRaw());
+    }
+
+    /**
+     * @When I GET to ":uri"
+     */
+    public function iGetToUri(string $uri): void
+    {
+        $this->sendGET($uri);
     }
 
     /**
@@ -124,6 +133,45 @@ class AcceptanceTester extends \Codeception\Actor
             );
             $cart = $this->haveInRepository(
                 $cart
+            );
+        }
+    }
+
+    /**
+     * @Given I have these items:
+     */
+    public function iHaveTheseItems(TableNode $attributes)
+    {
+        $keys = null;
+        foreach ($attributes->getRows() as $index => $row) {
+            if ($index == 0) {
+                $keys = $row;
+                continue;
+            }
+
+            $row = $this->cleanRow($row);
+
+            $values = array_combine($keys, $row);
+
+            $price = PriceMother::aPrice(
+                (int)$values['cents_amount'] ?? self::faker()->numberBetween(10, 2000),
+                $values['currency'] ?? 'EUR'
+            );
+
+            $product = ProductMother::aProduct(
+                id: $values['product_id'] ?? self::faker()->uuid(),
+                description: $values['description'] ?? self::faker()->word(),
+                price: $price
+            );
+
+            $cartItem = CartItemMother::aCartItem(
+                id: $values['id'] ?? self::faker()->uuid(),
+                product: $product,
+                quantity: (int)$values['quantity'] ?? self::faker()->numberBetween(1,4)
+            );
+
+            $cartItem = $this->haveInRepository(
+                $cartItem
             );
         }
     }

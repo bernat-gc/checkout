@@ -12,7 +12,7 @@ use BGC\Checkout\Shared\Domain\ValueObject\Uuid;
 class Product
 {
     public function __construct(
-        private readonly Uuid $id,
+        private Uuid $id,
         private readonly string $description,
         private readonly Price $price
     ) {

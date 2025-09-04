@@ -12,4 +12,13 @@ cart.item.create:
   defaults:
     _format: json
   requirements:
-          cartId: '[0-9a-f\-]{36}'
+    cartId: '[0-9a-f\-]{36}'
+
+cart.get:
+  path: /carts/{cartId}
+  methods: GET
+  controller: BGC\Checkout\Carts\Infrastructure\Controllers\GetCart
+  defaults:
+    _format: json
+  requirements:
+    cartId: '[0-9a-f\-]{36}'

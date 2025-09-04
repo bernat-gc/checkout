@@ -5,7 +5,7 @@
 
   <entity name="BGC\Checkout\Carts\Domain\CartItem" table="cart_item">
 
-    <id name="id" type="string" length="36"/>
+    <id name="id" type="uuid" length="36"/>
 
     <embedded name="product"
               class="BGC\Checkout\Carts\Domain\ValueObject\Product"

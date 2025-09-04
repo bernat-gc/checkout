@@ -6,6 +6,8 @@
 
 namespace BGC\Checkout\Shared\Domain\ValueObject;
 
+use BGC\Checkout\Shared\Domain\Exception\InvalidUuidException;
+
 class Uuid
 {
     protected const PATTERN = <<<REGEX

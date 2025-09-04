@@ -6,7 +6,7 @@
     <embeddable name="BGC\Checkout\Carts\Domain\ValueObject\Product">
       <field name="id"
              column="id"
-             type="string"
+             type="uuid"
              nullable="false"
              length="36"
       />

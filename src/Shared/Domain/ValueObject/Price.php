@@ -2,7 +2,6 @@
 
 namespace BGC\Checkout\Shared\Domain\ValueObject;
 
-use BGC\Checkout\Shared\Domain\ValueObject\Price;
 use Exception;
 use BGC\Checkout\Carts\Domain\Exception\InvalidPriceAmount;
 
@@ -18,11 +17,11 @@ class Price
 
     public static function fromAmount(float $amount, string $currency): Price
     {
-        $this->ensureValidAmount($amount);
+        self::ensureValidAmount($amount);
         return new Price($amount * 100, $currency);
     }
 
-    private function ensureValidAmount(float $amount): void
+    private static function ensureValidAmount(float $amount): void
     {
         if (((int)($amount * 100)) / 100 != $amount) {
             throw new InvalidPriceAmount();
