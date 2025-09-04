@@ -1,7 +1,8 @@
 <?php
 
-namespace BGC\Checkout\Carts\Domain\ValueObject;
+namespace BGC\Checkout\Shared\Domain\ValueObject;
 
+use BGC\Checkout\Shared\Domain\ValueObject\Price;
 use Exception;
 use BGC\Checkout\Carts\Domain\Exception\InvalidPriceAmount;
 

@@ -4,3 +4,12 @@ cart.create:
   controller: BGC\Checkout\Carts\Infrastructure\Controllers\PostCart
   defaults:
     _format: json
+
+cart.item.create:
+  path: /carts/{cartId}/items
+  methods: POST
+  controller: BGC\Checkout\Carts\Infrastructure\Controllers\PostCartItem
+  defaults:
+    _format: json
+  requirements:
+          cartId: '[0-9a-f\-]{36}'

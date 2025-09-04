@@ -3,7 +3,7 @@
 namespace BGC\Checkout\Carts\Domain\Collection;
 
 use BGC\Checkout\Carts\Domain\CartItem;
-use BGC\Checkout\Carts\Domain\ValueObject\Price;
+use BGC\Checkout\Shared\Domain\ValueObject\Price;
 use BGC\Checkout\Carts\Domain\ValueObject\Product;
 use BGC\Checkout\Shared\Domain\Collection\Collection;
 use BGC\Checkout\Shared\Domain\ValueObject\Uuid;

@@ -2,7 +2,7 @@
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                           https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
-    <embeddable name="BGC\Checkout\Carts\Domain\ValueObject\Price">
+    <embeddable name="BGC\Checkout\Shared\Domain\ValueObject\Price">
       <field name="centsAmount"
              column="amount"
              type="integer"

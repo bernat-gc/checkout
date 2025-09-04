@@ -2,9 +2,10 @@
 
 namespace BGC\Checkout\Carts\Application\Command;
 
+use BGC\Checkout\Shared\Application\Handler\Command\CommandInterface;
 use BGC\Checkout\Shared\Domain\ValueObject\Uuid;
 
-class CreateCartCommand
+class CreateCartCommand implements CommandInterface
 {
     private readonly Uuid $cartId;
     private readonly Uuid $userId;
