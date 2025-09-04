@@ -9,7 +9,7 @@
 
     <embedded name="product"
               class="BGC\Checkout\Carts\Domain\ValueObject\Product"
-              use-column-prefix="true"
+              column-prefix="product_"
     />
 
     <field name="quantity"

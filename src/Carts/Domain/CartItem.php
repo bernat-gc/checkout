@@ -8,7 +8,7 @@ namespace BGC\Checkout\Carts\Domain;
 
 use Exception;
 use BGC\Checkout\Carts\Domain\Exception\NonPositiveCartItemQuantity;
-use BGC\Checkout\Carts\Domain\ValueObject\Price;
+use BGC\Checkout\Shared\Domain\ValueObject\Price;
 use BGC\Checkout\Carts\Domain\ValueObject\Product;
 use BGC\Checkout\Shared\Domain\ValueObject\Uuid;
 

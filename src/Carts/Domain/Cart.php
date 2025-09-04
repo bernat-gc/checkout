@@ -15,7 +15,7 @@ use BGC\Checkout\Carts\Domain\Event\CartItemsModified;
 use BGC\Checkout\Carts\Domain\Event\CartOrdered;
 use BGC\Checkout\Carts\Domain\Exception\OrderedCartCannotBeModified;
 use BGC\Checkout\Carts\Domain\ValueObject\CartStatus;
-use BGC\Checkout\Carts\Domain\ValueObject\Price;
+use BGC\Checkout\Shared\Domain\ValueObject\Price;
 use BGC\Checkout\Shared\Domain\AggregateRoot;
 use BGC\Checkout\Shared\Domain\Exception\ItemNotFoundInCollection;
 use BGC\Checkout\Shared\Domain\ValueObject\Uuid;
@@ -57,7 +57,9 @@ class Cart extends AggregateRoot
 	public function items(): CartItems
 	{
 		if ($this->items instanceof PersistentCollection) {
-			$this->items = CartItems::fromArray($this->items->toArray());
+			$this->items = new CartItems(
+				...$this->items->toArray()
+			);
 		}
 		return $this->items;
 	}
@@ -66,8 +68,8 @@ class Cart extends AggregateRoot
 	{
 		$this->ensureCanBeModified();
 
-		$this->items()->addItem($item);
 		$item->setCart($this);
+		$this->items()->addItem($item);
 
 		$this->record(new CartItemsAdded(
 			(string)$this->id,

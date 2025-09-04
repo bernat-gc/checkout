@@ -5,10 +5,14 @@ declare(strict_types=1);
 namespace BGC\Checkout\Tests\Support;
 
 use BGC\Checkout\Carts\Domain\Cart;
+use BGC\Checkout\Carts\Domain\CartItem;
 use BGC\Checkout\Carts\Domain\Collection\CartItems;
 use BGC\Checkout\Carts\Domain\ValueObject\CartStatus;
+use BGC\Checkout\Product\Domain\Product;
 use BGC\Checkout\Shared\Domain\ValueObject\Uuid;
 use BGC\Checkout\Tests\ObjectMother\CartMother;
+use BGC\Checkout\Tests\ObjectMother\PriceMother;
+use BGC\Checkout\Tests\ObjectMother\ProductMother;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Faker\Factory;
@@ -35,7 +39,8 @@ class AcceptanceTester extends \Codeception\Actor
     use _generated\AcceptanceTesterActions;
 
     private static $entityMap = [
-        'cart' => Cart::class
+        'cart' => Cart::class,
+        'cart_item' => CartItem::class,
     ];
 
     private static ?Generator $faker = null;
@@ -120,6 +125,37 @@ class AcceptanceTester extends \Codeception\Actor
             $cart = $this->haveInRepository(
                 $cart
             );
+        }
+    }
+
+    /**
+     * @Given I have these products:
+     */
+    public function iHaveTheseProducts(TableNode $attributes)
+    {
+        $keys = null;
+        foreach ($attributes->getRows() as $index => $row) {
+            if ($index == 0) {
+                $keys = $row;
+                continue;
+            }
+
+            $row = $this->cleanRow($row);
+
+            $values = array_combine($keys, $row);
+
+            $price = PriceMother::aPrice(
+                (int)$values['cents_amount'] ?? self::faker()->numberBetween(10, 2000),
+                $values['currency'] ?? 'EUR'
+            );
+
+            $product = new Product(
+                id: new Uuid($values['id'] ?? self::faker()->uuid()),
+                description: $values['description'] ?? self::faker()->word(),
+                price: $price
+            );
+
+            $this->haveInRepository($product);
         }
     }
 

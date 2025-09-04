@@ -16,7 +16,7 @@
              length="50"
       />
       <embedded name="price"
-                class="BGC\Checkout\Carts\Domain\ValueObject\Price"
+                class="BGC\Checkout\Shared\Domain\ValueObject\Price"
                 column-prefix="price_"
       />
     </embeddable>

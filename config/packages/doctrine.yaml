@@ -21,11 +21,21 @@ doctrine:
             Doctrine\DBAL\Platforms\MySQLPlatform: identity
         auto_mapping: true
         mappings:
-            BGC:
+            Shared:
+                type: xml
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/Shared/Infrastructure/Persistence/Mapping'
+                prefix: 'BGC\Checkout\Shared'
+            Carts:
                 type: xml
                 is_bundle: false
                 dir: '%kernel.project_dir%/src/Carts/Infrastructure/Persistence/Mapping'
-                prefix: 'BGC\Checkout'
+                prefix: 'BGC\Checkout\Carts'
+            Product:
+                type: xml
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/Product/Infrastructure/Persistence/Mapping'
+                prefix: 'BGC\Checkout\Product'
         controller_resolver:
             auto_mapping: false
 

@@ -6,7 +6,7 @@
 
 namespace BGC\Checkout\Carts\Domain\ValueObject;
 
-use BGC\Checkout\Carts\Domain\ValueObject\Price;
+use BGC\Checkout\Shared\Domain\ValueObject\Price;
 use BGC\Checkout\Shared\Domain\ValueObject\Uuid;
 
 class Product

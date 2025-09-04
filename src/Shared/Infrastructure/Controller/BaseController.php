@@ -2,15 +2,19 @@
 
 namespace BGC\Checkout\Shared\Infrastructure\Controller;
 
-use BGC\Checkout\Shared\Infrastructure\Exception\ValidationException;
 use JsonSerializable;
+use Throwable;
+use BGC\Checkout\Shared\Application\Handler\Command\CommandInterface;
+use BGC\Checkout\Shared\Application\Handler\Query\QueryInterface;
+use BGC\Checkout\Shared\Application\Handler\Query\ResponseInterface;
+use BGC\Checkout\Shared\Infrastructure\Exception\ValidationException;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Messenger\Exception\HandlerFailedException;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Messenger\Stamp\HandledStamp;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Validation;
-use Throwable;
 
 abstract class BaseController extends AbstractController
 {
@@ -57,5 +61,17 @@ abstract class BaseController extends AbstractController
         }
 
         return $exception;
+    }
+
+    protected function execute(CommandInterface $command): void
+    {
+        $this->commandBus->dispatch($command);
+    }
+
+    protected function ask(QueryInterface $query): ResponseInterface
+    {
+        $responseEnvelope = $this->queryBus->dispatch($query);
+        $handledStamp = $responseEnvelope->last(HandledStamp::class);
+        return $handledStamp->getResult();
     }
 }
