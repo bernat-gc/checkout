@@ -143,4 +143,14 @@ class Cart extends AggregateRoot
 			throw new OrderedCartCannotBeModified();
 		}
 	}
+
+	public function toArray(): array
+	{
+		return [
+			'id' => (string)$this->id,
+			'user_id' => (string)$this->userId,
+			'status' => $this->status->value,
+			'items' => $this->items()->toArray()
+		];
+	}
 }
