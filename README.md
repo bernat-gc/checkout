@@ -26,7 +26,7 @@ It has been modeled using a main bounded context of Carts, and bounded context f
 
 In the bounded context of Cart there is only one aggregate root, Cart. It has an `id` and a `user_id`, and a list of Items. As an aggregate root, it also has `created_at` and `updated_at` timestamps to monitor creation and modification, for data ingestion purposes. It also has an `status` attribute, which starts with value `Shopping` and can be modified to `Ordered`. After being modified, no more modifications of the Cart or its items are allowed. It represent that the Cart has been checked out and an Order and subsequent payment has been created.
 
-The list of items can has multiple elements. Each one has a product and a quantity, and the product has an identificator, a description and a price. It has been modeled as a value-object in this bounded-context because they are only snapshots of the products and no modification are allowed.
+The list of items can have multiple elements. Each one has a product and a quantity, and the product has an identificator, a description and a price. It has been modeled as a value-object in this bounded-context because they are only snapshots of the products and no modification are allowed.
 
 The model can be (and must be) easily extended to include more field to Cart model or its items.
 
@@ -48,7 +48,7 @@ The last endpoint only changes the status attribute of Cart and publishes an eve
 ## Further improvements
 There a lot of aspect that are important for an API but has not been implemented.
 - Logging: Although monolog has been installed, no log messages have included in the logic. I considered that other aspect were more rellevant for the goal of this test.
-- Authentication: The API has no authentication nor a user entity defined. It only has the user_id field in Carts. If I has to implement it, I will use JWTs for it, with the user_id and roles in them. This will allow to control who can see, modified or order the Carts (only the owner or a high rol user).
+- Authentication: The API has no authentication nor a user entity defined. It only has the user_id field in Carts. If I has to implement it, I will use JWTs for it, with the user_id and roles in them. This will allow to control who can see, modify or order the Carts (only the owner or a high rol user).
 - Broadcasting service: the symfony messenger component it has been configured only for command and query buses, and no event bus has been used. There can be configured a synchronous and an asynchronous buses, to allow other services as well as this one to consume events and react in consequence.
 - Testing: it has been included only basic unit and acceptance tests. Functional and integration tests can be included, as well as increment the coverage of the existing ones.
 
