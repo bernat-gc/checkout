@@ -2,11 +2,9 @@
 
 namespace BGC\Checkout\Carts\Infrastructure\Controllers;
 
-use BGC\Checkout\Carts\Application\Command\AddItemCommand;
+use BGC\Checkout\Carts\Application\Command\ModifyCartItemCommand;
+use BGC\Checkout\Carts\Application\Exception\CartItemNotFound;
 use BGC\Checkout\Carts\Application\Exception\CartNotFound;
-use BGC\Checkout\Product\Application\Exception\ProductNotFound;
-use BGC\Checkout\Product\Application\Query\GetProductQuery;
-use BGC\Checkout\Product\Domain\Product;
 use BGC\Checkout\Shared\Infrastructure\Controller\BaseController;
 use BGC\Checkout\Shared\Infrastructure\Exception\ValidationException;
 use Exception;
@@ -15,34 +13,27 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class PostCartItem extends BaseController
+class PatchCartItem extends BaseController
 {
-    public function __invoke(string $cartId, Request $request): Response
+    public function __invoke(string $cartId, string $cartItemId, Request $request): Response
     {
         try {
-            $input = $request->toArray();
+            $input = array_merge(
+                $request->toArray(),
+                ['cart_id' => $cartId, 'cart_item_id' => $cartItemId]
+            );
 
             $this->validate($input, $this->constraints());
 
-            $product = $this->getProduct($input['product_id']);
-
-            if (!$product) {
-                throw new ProductNotFound($input['product_id']);
-            }
-
-            $command = new AddItemCommand(
-                $input['id'],
+            $command = new ModifyCartItemCommand(
                 $cartId,
-                (string)$product->id(),
-                $product->description(),
-                $input['quantity'],
-                $product->price()->centsAmount(),
-                $product->price()->currency()
+                $cartItemId,
+                $input['quantity']
             );
 
             $this->execute($command);
 
-            return new Response('', Response::HTTP_CREATED);
+            return new Response('', Response::HTTP_NO_CONTENT);
 
         } catch (Exception $exception) {
             return new JsonResponse(
@@ -52,23 +43,14 @@ class PostCartItem extends BaseController
         }
     }
 
-    private function getProduct(string $productId): ?Product
-    {
-        $query = new GetProductQuery($productId);
-
-        $response = $this->ask($query);
-
-        return $response->product();
-    }
-
     private function constraints(): array
     {
         return [
-            'id' => [
+            'cart_id' => [
                 new Assert\Required(),
                 new Assert\Uuid(versions: [Assert\Uuid::V4_RANDOM])
             ],
-            'product_id' => [
+            'cart_item_id' => [
                 new Assert\Required(),
                 new Assert\Uuid(versions: [Assert\Uuid::V4_RANDOM])
             ],
@@ -86,7 +68,7 @@ class PostCartItem extends BaseController
         return match ($exception::class) {
             ValidationException::class => Response::HTTP_BAD_REQUEST,
             CartNotFound::class => Response::HTTP_NOT_FOUND,
-            ProductNotFound::class => Response::HTTP_BAD_REQUEST,
+            CartItemNotFound::class => Response::HTTP_NOT_FOUND,
             default => Response::HTTP_INTERNAL_SERVER_ERROR
         };
     }

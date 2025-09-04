@@ -66,6 +66,16 @@ class AcceptanceTester extends \Codeception\Actor
     }
 
     /**
+     * @When I PATCH to ":uri" with json body: :body
+     */
+    public function iPatchToUriWithJson(string $uri, PyStringNode $body): void
+    {
+        $this->haveHttpHeader('Content-Type', 'application/json');
+
+        $this->sendPATCH($uri, $body->getRaw());
+    }
+
+    /**
      * @When I GET to ":uri"
      */
     public function iGetToUri(string $uri): void
@@ -169,6 +179,9 @@ class AcceptanceTester extends \Codeception\Actor
                 product: $product,
                 quantity: (int)$values['quantity'] ?? self::faker()->numberBetween(1,4)
             );
+
+            $cart = $this->grabEntityFromRepository(Cart::class, ['id' => $values['cart_id']]);
+            $cart->addItem($cartItem);
 
             $cartItem = $this->haveInRepository(
                 $cartItem
