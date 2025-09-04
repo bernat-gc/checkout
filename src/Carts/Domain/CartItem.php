@@ -24,7 +24,7 @@ class CartItem
         $this->ensureQuantityIsPositive();
     }
 
-    public function setCart(Cart $cart): void
+    public function setCart(?Cart $cart): void
     {
         $this->cart = $cart;
     }

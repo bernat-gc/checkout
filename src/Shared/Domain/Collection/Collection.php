@@ -3,17 +3,21 @@
 namespace BGC\Checkout\Shared\Domain\Collection;
 
 use BGC\Checkout\Shared\Domain\Exception\InvalidClassForItem;
-use BGC\Checkout\Shared\Domain\Exception\ItemNotFoundInCollection;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection as DoctrineCollection;
+use Doctrine\ORM\PersistentCollection;
 
-abstract class Collection extends ArrayCollection
+abstract class Collection extends ArrayCollection implements DoctrineCollection
 {
     abstract protected function itemClass(): string;
+
+    private ?PersistentCollection $persistent;
 
     public function __construct(
         ...$elements
     ) {
         array_walk($elements, [$this, 'ensureElementOfClass']);
+        $this->persistent = null;
 
         parent::__construct($elements);
     }
@@ -40,15 +44,42 @@ abstract class Collection extends ArrayCollection
     public function add($element): void
     {
         $this->ensureElementOfClass($element);
-        $this->set((string)$element->id(), $element);
+        if ($this->persistent) {
+            $this->persistent->set((string)$element->id(), $element);
+        }
+        parent::set((string)$element->id(), $element);
     }
 
-    public function removeItem(string $elementId): void
+    public function removeElement($element): bool
     {
-        $removed = $this->remove($elementId);
-
-        if (!$removed) {
-            throw new ItemNotFoundInCollection();
+        if ($this->persistent) {
+            $this->persistent->removeElement($element);
         }
+        return parent::removeElement($element);
+    }
+
+    public static function transform(?DoctrineCollection $items): DoctrineCollection
+    {
+        $class = get_called_class();
+
+        if ($items instanceof PersistentCollection) {
+            $elements = [];
+            foreach ($items as $item) {
+                array_push($elements, $item);
+            }
+            /** @var self $newCollection */
+            $newCollection = new $class(...$elements);
+            $newCollection->setPersistentCollection($items);
+            return $newCollection;
+        }
+        if ($items) {
+            return $items;
+        }
+        return new $class();
+    }
+
+    public function setPersistentCollection(PersistentCollection $collection): void
+    {
+        $this->persistent = $collection;
     }
 }

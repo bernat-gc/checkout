@@ -84,6 +84,14 @@ class AcceptanceTester extends \Codeception\Actor
     }
 
     /**
+     * @When I DELETE to ":uri"
+     */
+    public function iDeleteToUri(string $uri): void
+    {
+        $this->sendDelete($uri);
+    }
+
+    /**
      * @Then /^response should be (\d+)$/
      */
     public function responseShoudBe(string $code): void
@@ -107,6 +115,29 @@ class AcceptanceTester extends \Codeception\Actor
 
             $criteria = array_combine($keys, $row);
             $this->seeInRepository(
+                self::$entityMap[$entity],
+                $criteria
+            );
+        }
+    }
+
+    /**
+     * @Then database should not have a :entity with attributes:
+     */
+    public function databaseShouldNotHaveAWithAttributes($entity, TableNode $attributes)
+    {
+        $keys = null;
+        foreach ($attributes->getRows() as $index => $row) {
+            if ($index == 0) {
+                $keys = $row;
+                continue;
+            }
+
+            $row = $this->cleanRow($row);
+
+            $criteria = array_combine($keys, $row);
+            // dump($this->grabEntityFromRepository(CartItem::class, ['id' => new Uuid($criteria['id'])]));
+            $this->dontSeeInRepository(
                 self::$entityMap[$entity],
                 $criteria
             );

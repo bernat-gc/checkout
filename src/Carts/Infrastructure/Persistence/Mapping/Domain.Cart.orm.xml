@@ -13,7 +13,8 @@
 
     <one-to-many field="items"
                  target-entity="BGC\Checkout\Carts\Domain\CartItem"
-                 mapped-by="cart">
+                 mapped-by="cart"
+                 orphan-removal="true">
       <cascade>
           <cascade-all/>
       </cascade>
