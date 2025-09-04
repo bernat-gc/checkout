@@ -135,11 +135,15 @@ class Cart extends AggregateRoot
 
 	public function order(): void
 	{
+		if ($this->status == CartStatus::Ordered) {
+			return;
+		}
+
 		$this->status = CartStatus::Ordered;
 
 		$this->record(new CartOrdered(
 			(string)$this->id,
-			['status' => $this->status->value]
+			$this->toArray()
 		));
 	}
 

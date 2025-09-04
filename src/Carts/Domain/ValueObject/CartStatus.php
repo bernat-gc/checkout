@@ -22,4 +22,9 @@ enum CartStatus: string
             'Ordered' => self::Ordered
         };
     }
+
+    public static function options(): array
+    {
+        return array_map(fn($item) => $item->value, self::cases());
+    }
 }
