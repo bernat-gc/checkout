@@ -1,0 +1,149 @@
+nelmio_api_doc:
+    documentation:
+        info:
+            title: Checkout
+            description: Api to manage Carts in a checkout services
+            version: 1.0.0
+    areas: # to filter documented areas
+        path_patterns:
+            - ^/carts # Accepts routes under /api except /api/doc
+        documentation:
+            openapi: 3.0.0
+            info:
+              title: Checkout
+              description: Api to manage Carts in a checkout services
+              version: 1.0.0
+            paths:
+              /carts:
+                post:
+                  operationId: post_cart.create
+                  responses:
+                    default:
+                      description: ''
+                  requestBody:
+                    description: New Cart
+                    content:
+                      application/json:
+                        schema:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                              format: uuid
+                            user_id:
+                              type: string
+                              format: uuid
+
+              /carts/{cartId}/items:
+                post:
+                  operationId: post_cart.item.create
+                  parameters:
+                    - name: cartId
+                      in: path
+                      required: true
+                      schema:
+                        type: string
+                        pattern: '[0-9a-f\-]{36}'
+                  responses:
+                    default:
+                      description: ''
+                  requestBody:
+                    description: New Cart Item
+                    content:
+                      application/json:
+                        schema:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                              format: uuid
+                            product_id:
+                              type: string
+                              format: uuid
+                            quantity:
+                              type: integer
+              /carts/{cartId}:
+                get:
+                  operationId: get_cart.get
+                  parameters:
+                    - name: cartId
+                      in: path
+                      required: true
+                      schema:
+                        type: string
+                        pattern: '[0-9a-f\-]{36}'
+                  responses:
+                    default:
+                      description: ''
+              /carts/{cartId}/items/{cartItemId}:
+                delete:
+                  operationId: delete_cart.item.delete
+                  parameters:
+                    - name: cartId
+                      in: path
+                      required: true
+                      schema:
+                        type: string
+                        pattern: '[0-9a-f\-]{36}'
+                    - name: cartItemId
+                      in: path
+                      required: true
+                      schema:
+                        type: string
+                        pattern: '[0-9a-f\-]{36}'
+                  responses:
+                    default:
+                      description: ''
+                patch:
+                  operationId: patch_cart.item.modify
+                  parameters:
+                    - name: cartId
+                      in: path
+                      required: true
+                      schema:
+                        type: string
+                        pattern: '[0-9a-f\-]{36}'
+                    - name: cartItemId
+                      in: path
+                      required: true
+                      schema:
+                        type: string
+                        pattern: '[0-9a-f\-]{36}'
+                  responses:
+                    default:
+                      description: ''
+                  requestBody:
+                    description: Modify quantity of product in item
+                    content:
+                      application/json:
+                        schema:
+                          type: object
+                          properties:
+                            quantity:
+                              type: integer
+              /carts/{cartId}/order:
+                patch:
+                  operationId: patch_cart.order
+                  parameters:
+                    - name: cartId
+                      in: path
+                      required: true
+                      schema:
+                        type: string
+                        pattern: '[0-9a-f\-]{36}'
+                  responses:
+                    default:
+                      description: ''
+                  requestBody:
+                    description: Order a Cart
+                    content:
+                      application/json:
+                        schema:
+                          type: object
+                          properties:
+                            status:
+                              type: string
+                              enum:
+                                - Shopping
+                                - Ordered
+                              example: Ordered
