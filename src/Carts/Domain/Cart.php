@@ -57,12 +57,7 @@ class Cart extends AggregateRoot
 
 	public function items(): CartItems
 	{
-		if (!$this->items instanceof CartItems) {
-			$this->items = new CartItems(
-				...iterator_to_array($this->items->getIterator())
-			);
-		}
-		return $this->items;
+		return CartItems::transform($this->items);
 	}
 
 	public function addItem(CartItem $item): void
@@ -97,7 +92,17 @@ class Cart extends AggregateRoot
 	{
 		$this->ensureCanBeModified();
 
-		$this->items()->removeItem((string)$cartItemId);
+		$cartItem = $this->items()->findById($cartItemId);
+
+		if (!$cartItem) {
+			throw new CartItemNotFound((string)$cartItemId);
+		}
+
+		try {
+			$this->items()->deleteItem($cartItem);
+		} catch (ItemNotFoundInCollection $exception) {
+			throw new CartItemNotFound((string)$cartItemId);
+		}
 
 		$this->record(new CartItemRemoved(
 			(string)$this->id,

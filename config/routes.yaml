@@ -32,3 +32,13 @@ cart.item.modify:
   requirements:
     cartId: '[0-9a-f\-]{36}'
     cartItemId: '[0-9a-f\-]{36}'
+
+cart.item.delete:
+  path: /carts/{cartId}/items/{cartItemId}
+  methods: DELETE
+  controller: BGC\Checkout\Carts\Infrastructure\Controllers\DeleteCartItem
+  defaults:
+    _format: json
+  requirements:
+    cartId: '[0-9a-f\-]{36}'
+    cartItemId: '[0-9a-f\-]{36}'

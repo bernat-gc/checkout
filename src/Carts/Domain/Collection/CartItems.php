@@ -3,9 +3,10 @@
 namespace BGC\Checkout\Carts\Domain\Collection;
 
 use BGC\Checkout\Carts\Domain\CartItem;
-use BGC\Checkout\Shared\Domain\ValueObject\Price;
 use BGC\Checkout\Carts\Domain\ValueObject\Product;
 use BGC\Checkout\Shared\Domain\Collection\Collection;
+use BGC\Checkout\Shared\Domain\Exception\ItemNotFoundInCollection;
+use BGC\Checkout\Shared\Domain\ValueObject\Price;
 use BGC\Checkout\Shared\Domain\ValueObject\Uuid;
 
 class CartItems extends Collection
@@ -61,6 +62,14 @@ class CartItems extends Collection
         } else {
             $cartItem->increase($item->quantity());
         }
+    }
+
+    public function deleteItem(CartItem $item): void
+    {
+        if(!$this->removeElement($item)) {
+            throw new ItemNotFoundInCollection();
+        }
+        $item->setCart(null);
     }
 
     public function toArray(): array
