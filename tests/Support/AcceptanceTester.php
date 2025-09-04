@@ -114,6 +114,7 @@ class AcceptanceTester extends \Codeception\Actor
             $row = $this->cleanRow($row);
 
             $criteria = array_combine($keys, $row);
+
             $this->seeInRepository(
                 self::$entityMap[$entity],
                 $criteria
@@ -249,6 +250,16 @@ class AcceptanceTester extends \Codeception\Actor
 
             $this->haveInRepository($product);
         }
+    }
+
+    /**
+     * @Given /^the cart with id "([^"]{36})" is ordered$/
+     */
+    public function FunctionName(string $cartId)
+    {
+        $cart = $this->grabEntityFromRepository(Cart::class, ['id' => $cartId]);
+        $cart->order();
+        $this->haveInRepository($cart);
     }
 
     private function cleanRow(array $row): array
