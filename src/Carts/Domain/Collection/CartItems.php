@@ -45,7 +45,6 @@ class CartItems extends Collection
             $this->elements(),
             fn ($item) => $item->id()->equals($itemId)
         );
-
         if (!$itemsWithId) {
             return null;
         }

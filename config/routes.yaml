@@ -22,3 +22,13 @@ cart.get:
     _format: json
   requirements:
     cartId: '[0-9a-f\-]{36}'
+
+cart.item.modify:
+  path: /carts/{cartId}/items/{cartItemId}
+  methods: PATCH
+  controller: BGC\Checkout\Carts\Infrastructure\Controllers\PatchCartItem
+  defaults:
+    _format: json
+  requirements:
+    cartId: '[0-9a-f\-]{36}'
+    cartItemId: '[0-9a-f\-]{36}'

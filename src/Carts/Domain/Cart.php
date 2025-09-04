@@ -6,6 +6,7 @@
 
 namespace BGC\Checkout\Carts\Domain;
 
+use BGC\Checkout\Carts\Application\Exception\CartItemNotFound;
 use BGC\Checkout\Carts\Domain\CartItem;
 use BGC\Checkout\Carts\Domain\Collection\CartItems;
 use BGC\Checkout\Carts\Domain\Event\CartCreated;
@@ -15,9 +16,9 @@ use BGC\Checkout\Carts\Domain\Event\CartItemsModified;
 use BGC\Checkout\Carts\Domain\Event\CartOrdered;
 use BGC\Checkout\Carts\Domain\Exception\OrderedCartCannotBeModified;
 use BGC\Checkout\Carts\Domain\ValueObject\CartStatus;
-use BGC\Checkout\Shared\Domain\ValueObject\Price;
 use BGC\Checkout\Shared\Domain\AggregateRoot;
 use BGC\Checkout\Shared\Domain\Exception\ItemNotFoundInCollection;
+use BGC\Checkout\Shared\Domain\ValueObject\Price;
 use BGC\Checkout\Shared\Domain\ValueObject\Uuid;
 use DateTimeImmutable;
 use Doctrine\ORM\PersistentCollection;
@@ -56,9 +57,9 @@ class Cart extends AggregateRoot
 
 	public function items(): CartItems
 	{
-		if ($this->items instanceof PersistentCollection) {
+		if (!$this->items instanceof CartItems) {
 			$this->items = new CartItems(
-				...$this->items->toArray()
+				...iterator_to_array($this->items->getIterator())
 			);
 		}
 		return $this->items;
@@ -111,7 +112,7 @@ class Cart extends AggregateRoot
 		$item = $this->items()->findById($itemId);
 
 		if (!$item) {
-			throw new ItemNotFoundInCollection();
+			throw new CartItemNotFound((string)$itemId);
 		}
 
 		$item->modifyQuantity($newQuantity);

@@ -2,6 +2,7 @@
 
 namespace BGC\Checkout\Shared\Domain\Collection;
 
+use BGC\Checkout\Shared\Domain\Exception\InvalidClassForItem;
 use BGC\Checkout\Shared\Domain\Exception\ItemNotFoundInCollection;
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -27,10 +28,11 @@ abstract class Collection extends ArrayCollection
         $class = $this->itemClass();
 
         if (!($element instanceof $class)) {
+            debug_print_backtrace();
             throw new InvalidClassForItem(
                 static::class,
                 $this->itemClass(),
-                get_class($element)
+                $element::class
             );
         }
     }
