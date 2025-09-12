@@ -26,7 +26,7 @@ docker exec app vendor/bin/codecept run
 ```
 
 These commands and some other have been integrated into a Makefile.
-- `make build` builds the container and install the dependencies with composer
+- `make build` builds the containers and install the dependencies with composer
 - `make test` executes the tests inside the container
 - `make testv` executes the tests in verbose mode
 - `make in` enters the container in a bash shell
