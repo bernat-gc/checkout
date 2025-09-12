@@ -2,12 +2,14 @@
 
 namespace BGC\Checkout\Carts\Application\Handler;
 
-use BGC\Checkout\Carts\Domain\CartItem;
-use BGC\Checkout\Carts\Domain\Cart;
-use BGC\Checkout\Carts\Domain\Entity\Product;
-use BGC\Checkout\Carts\Domain\Repository\CartRepository;
 use BGC\Checkout\Carts\Application\Command\AddItemCommand;
 use BGC\Checkout\Carts\Application\Exception\CartNotFound;
+use BGC\Checkout\Carts\Domain\Cart;
+use BGC\Checkout\Carts\Domain\CartItem;
+use BGC\Checkout\Carts\Domain\Entity\Product;
+use BGC\Checkout\Carts\Domain\Repository\CartProductRepository;
+use BGC\Checkout\Carts\Domain\Repository\CartRepository;
+use BGC\Checkout\Product\Application\Exception\ProductNotFound;
 use BGC\Checkout\Shared\Application\Events\EventPublisherInterface;
 use BGC\Checkout\Shared\Application\Handler\CommandHandlerInterface;
 use BGC\Checkout\Shared\Domain\ValueObject\Price;
@@ -17,6 +19,7 @@ class AddItemHandler implements CommandHandlerInterface
 {
     public function __construct(
         private readonly CartRepository $repository,
+        private readonly CartProductRepository $productRepository,
         private readonly EventPublisherInterface $publisher
     ) {
     }
@@ -51,16 +54,20 @@ class AddItemHandler implements CommandHandlerInterface
         return $cart;
     }
 
+    private function findProduct(Uuid $productId): Product
+    {
+        $product = $this->productRepository->findById($productId);
+
+        if (!$product) {
+            throw new ProductNotFound((string) $productId);
+        }
+
+        return $product;
+    }
+
     private function buildItem(AddItemCommand $command): CartItem
     {
-        $product = new Product(
-            $command->productId(),
-            $command->description(),
-            new Price(
-                $command->centsAmount(),
-                $command->currency()
-            )
-        );
+        $product = $this->findProduct($command->productId());
 
         return new CartItem(
             $command->id(),

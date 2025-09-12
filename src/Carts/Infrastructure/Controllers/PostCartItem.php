@@ -2,14 +2,12 @@
 
 namespace BGC\Checkout\Carts\Infrastructure\Controllers;
 
+use Exception;
 use BGC\Checkout\Carts\Application\Command\AddItemCommand;
 use BGC\Checkout\Carts\Application\Exception\CartNotFound;
 use BGC\Checkout\Product\Application\Exception\ProductNotFound;
-use BGC\Checkout\Product\Application\Query\GetProductQuery;
-use BGC\Checkout\Product\Domain\Product;
 use BGC\Checkout\Shared\Infrastructure\Controller\BaseController;
 use BGC\Checkout\Shared\Infrastructure\Exception\ValidationException;
-use Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,20 +22,11 @@ class PostCartItem extends BaseController
 
             $this->validate($input, $this->constraints());
 
-            $product = $this->getProduct($input['product_id']);
-
-            if (!$product) {
-                throw new ProductNotFound($input['product_id']);
-            }
-
             $command = new AddItemCommand(
                 $input['id'],
                 $cartId,
-                (string)$product->id(),
-                $product->description(),
+                $input['product_id'],
                 $input['quantity'],
-                $product->price()->centsAmount(),
-                $product->price()->currency()
             );
 
             $this->execute($command);
@@ -50,15 +39,6 @@ class PostCartItem extends BaseController
                 $this->responseCodeMapping($exception)
             );
         }
-    }
-
-    private function getProduct(string $productId): ?Product
-    {
-        $query = new GetProductQuery($productId);
-
-        $response = $this->ask($query);
-
-        return $response->product();
     }
 
     private function constraints(): array
