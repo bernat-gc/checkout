@@ -19,6 +19,7 @@ use BGC\Checkout\Carts\Domain\ValueObject\CartStatus;
 use BGC\Checkout\Shared\Domain\AggregateRoot;
 use BGC\Checkout\Shared\Domain\Exception\ItemNotFoundInCollection;
 use BGC\Checkout\Shared\Domain\ValueObject\Price;
+use BGC\Checkout\Shared\Domain\ValueObject\Quantity;
 use BGC\Checkout\Shared\Domain\ValueObject\Uuid;
 use DateTimeImmutable;
 use Doctrine\ORM\PersistentCollection;
@@ -110,7 +111,7 @@ class Cart extends AggregateRoot
 		));
 	}
 
-	public function modifyCartItem(Uuid $itemId, int $newQuantity): void
+	public function modifyCartItem(Uuid $itemId, Quantity $newQuantity): void
 	{
 		$this->ensureCanBeModified();
 

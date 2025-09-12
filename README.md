@@ -26,7 +26,7 @@ It has been modeled using a main bounded context of Carts, and bounded context f
 
 In the bounded context of Cart there is only one aggregate root, Cart. It has an `id` and a `user_id`, and a list of Items. As an aggregate root, it also has `created_at` and `updated_at` timestamps to monitor creation and modification, for data ingestion purposes. It also has an `status` attribute, which starts with value `Shopping` and can be modified to `Ordered`. After being modified, no more modifications of the Cart or its items are allowed. It represent that the Cart has been checked out and an Order and subsequent payment has been created.
 
-The list of items can have multiple elements. Each one has a product and a quantity, and the product has an identificator, a description and a price. It has been modeled as a value-object in this bounded-context because they are only snapshots of the products and no modification are allowed.
+The list of items can have multiple elements. Each one has a product and a quantity, and the product has an identificator, a description and a price. It has been modeled as an entity without logic in this bounded-context because they are only snapshots of the products and no modification are allowed.
 
 The model can be (and must be) easily extended to include more field to Cart model or its items.
 

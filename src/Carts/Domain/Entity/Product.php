@@ -4,8 +4,9 @@
  * Product class
  */
 
-namespace BGC\Checkout\Carts\Domain\ValueObject;
+namespace BGC\Checkout\Carts\Domain\Entity;
 
+use BGC\Checkout\Shared\Domain\ValueObject\ProductDescription;
 use BGC\Checkout\Shared\Domain\ValueObject\Price;
 use BGC\Checkout\Shared\Domain\ValueObject\Uuid;
 
@@ -13,7 +14,7 @@ class Product
 {
     public function __construct(
         private Uuid $id,
-        private readonly string $description,
+        private readonly ProductDescription $description,
         private readonly Price $price
     ) {
     }
@@ -28,7 +29,7 @@ class Product
         return $this->price;
     }
 
-    public function description(): string
+    public function description(): ProductDescription
     {
         return $this->description;
     }
@@ -42,7 +43,7 @@ class Product
     {
         return [
             'id' => (string)$this->id,
-            'description' => $this->description,
+            'description' => (string)$this->description,
             'price' => $this->price->toArray()
         ];
     }

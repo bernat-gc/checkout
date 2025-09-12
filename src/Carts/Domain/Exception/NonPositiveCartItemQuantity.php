@@ -6,7 +6,7 @@ use Exception;
 
 class NonPositiveCartItemQuantity extends Exception
 {
-    public function __construct($quantity)
+    public function __construct()
     {
         parnet::__construct("Quantity in cart items must be a positve integer");
     }

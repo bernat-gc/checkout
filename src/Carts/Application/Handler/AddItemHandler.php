@@ -4,7 +4,7 @@ namespace BGC\Checkout\Carts\Application\Handler;
 
 use BGC\Checkout\Carts\Domain\CartItem;
 use BGC\Checkout\Carts\Domain\Cart;
-use BGC\Checkout\Carts\Domain\ValueObject\Product;
+use BGC\Checkout\Carts\Domain\Entity\Product;
 use BGC\Checkout\Carts\Domain\Repository\CartRepository;
 use BGC\Checkout\Carts\Application\Command\AddItemCommand;
 use BGC\Checkout\Carts\Application\Exception\CartNotFound;

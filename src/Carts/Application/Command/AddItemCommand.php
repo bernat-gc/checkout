@@ -3,6 +3,8 @@
 namespace BGC\Checkout\Carts\Application\Command;
 
 use BGC\Checkout\Shared\Application\Handler\Command\CommandInterface;
+use BGC\Checkout\Shared\Domain\ValueObject\ProductDescription;
+use BGC\Checkout\Shared\Domain\ValueObject\Quantity;
 use BGC\Checkout\Shared\Domain\ValueObject\Uuid;
 
 class AddItemCommand implements CommandInterface
@@ -10,8 +12,8 @@ class AddItemCommand implements CommandInterface
     private readonly Uuid $id;
     private readonly Uuid $cartId;
     private readonly Uuid $productId;
-    private readonly string $description;
-    private readonly int $quantity;
+    private readonly ProductDescription $description;
+    private readonly Quantity $quantity;
     private readonly int $centsAmount;
     private readonly string $currency;
 
@@ -27,8 +29,8 @@ class AddItemCommand implements CommandInterface
         $this->id = new Uuid($id);
         $this->cartId = new Uuid($cartId);
         $this->productId = new Uuid($productId);
-        $this->description = $description;
-        $this->quantity = $quantity;
+        $this->description = new ProductDescription($description);
+        $this->quantity = new Quantity($quantity);
         $this->centsAmount = $centsAmount;
         $this->currency = $currency;
     }
@@ -48,12 +50,12 @@ class AddItemCommand implements CommandInterface
         return $this->productId;
     }
 
-    public function description(): string
+    public function description(): ProductDescription
     {
         return $this->description;
     }
 
-    public function quantity(): int
+    public function quantity(): Quantity
     {
         return $this->quantity;
     }

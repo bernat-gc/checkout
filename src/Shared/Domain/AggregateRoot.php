@@ -7,14 +7,14 @@
 namespace BGC\Checkout\Shared\Domain;
 
 use BGC\Checkout\Shared\Domain\Event\DomainEvent;
-use DateTimeImmutable;
+use BGC\Checkout\Shared\Domain\ValueObject\DateTimeValueObject;
 
 abstract class AggregateRoot
 {   
     private $events = [];
 
-    protected DateTimeImmutable $createdAt;
-    protected DateTimeImmutable $updatedAt;
+    protected DateTimeValueObject $createdAt;
+    protected DateTimeValueObject $updatedAt;
 
     public function __construct()
     {
@@ -36,7 +36,7 @@ abstract class AggregateRoot
 
     public function refreshTimestamps(): void
     {
-        $now = new DateTimeImmutable();
+        $now = DateTimeValueObject::now();
 
         if (!isset($this->createdAt)) {
             $this->createdAt = clone $now;
@@ -45,12 +45,12 @@ abstract class AggregateRoot
         $this->updatedAt = $now;
     }
 
-    public function createdAt(): DateTimeImmutable
+    public function createdAt(): DateTimeValueObject
     {
         return $this->createdAt;
     }
 
-    public function updatedAt(): DateTimeImmutable
+    public function updatedAt(): DateTimeValueObject
     {
         return $this->updatedAt;
     }

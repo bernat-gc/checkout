@@ -10,6 +10,9 @@ services:
       - .:/var/www/html
     depends_on:
       - mysql
+    networks:
+      - checkout
+
   mysql:
     image: mysql:5.7
     container_name: mysql
@@ -23,6 +26,8 @@ services:
       - "3307:3306"
     volumes:
       - mysql_data:/var/lib/mysql
+    networks:
+      - checkout
 
   nginx:
     image: nginx:alpine
@@ -34,7 +39,12 @@ services:
       - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
     depends_on:
       - app
+    networks:
+      - checkout
 
 volumes:
   mysql_data:
 
+networks:
+  checkout:
+    driver: bridge
