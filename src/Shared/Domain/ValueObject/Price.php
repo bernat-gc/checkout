@@ -61,9 +61,9 @@ class Price
         return new Price($centsAmount, $currency);
     }
 
-    public function multiply(int $quantity): Price
+    public function multiply(Quantity $quantity): Price
     {
-        return new Price($this->centsAmount * $quantity, $this->currency);
+        return new Price($this->centsAmount * $quantity->toInt(), $this->currency);
     }
 
     public function toArray(): array

@@ -9,6 +9,7 @@ use BGC\Checkout\Carts\Domain\CartItem;
 use BGC\Checkout\Carts\Domain\Collection\CartItems;
 use BGC\Checkout\Carts\Domain\ValueObject\CartStatus;
 use BGC\Checkout\Product\Domain\Product;
+use BGC\Checkout\Shared\Domain\ValueObject\ProductDescription;
 use BGC\Checkout\Shared\Domain\ValueObject\Uuid;
 use BGC\Checkout\Tests\ObjectMother\CartItemMother;
 use BGC\Checkout\Tests\ObjectMother\CartMother;
@@ -244,7 +245,9 @@ class AcceptanceTester extends \Codeception\Actor
 
             $product = new Product(
                 id: new Uuid($values['id'] ?? self::faker()->uuid()),
-                description: $values['description'] ?? self::faker()->word(),
+                description: new ProductDescription(
+                    $values['description'] ?? self::faker()->word()
+                ),
                 price: $price
             );
 

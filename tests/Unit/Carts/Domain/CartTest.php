@@ -113,7 +113,7 @@ class CartTest extends Unit
         );
         $itemToModifyId = $cart->items()->getKeys()[1];
         $itemToModify = $cart->items()->findById(new Uuid($itemToModifyId));
-        $newQuantity = $itemToModify->quantity() + 2;
+        $newQuantity = $itemToModify->quantity()->increase(2);
 
         // Act
         $cart->modifyCartItem(new Uuid($itemToModifyId), $newQuantity);
@@ -184,7 +184,7 @@ class CartTest extends Unit
         );
         $itemToModifyId = $cart->items()->getKeys()[1];
         $itemToModify = $cart->items()->findById(new Uuid($itemToModifyId));
-        $newQuantity = $itemToModify->quantity() + 2;
+        $newQuantity = $itemToModify->quantity()->increase(2);
 
         $this->expectException(OrderedCartCannotBeModified::class);
 

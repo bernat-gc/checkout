@@ -8,13 +8,13 @@
     <id name="id" type="uuid" length="36"/>
 
     <embedded name="product"
-              class="BGC\Checkout\Carts\Domain\ValueObject\Product"
+              class="BGC\Checkout\Carts\Domain\Entity\Product"
               column-prefix="product_"
     />
 
-    <field name="quantity"
-           column="quantity"
-           type="integer"
+    <embedded name="quantity"
+              class="BGC\Checkout\Shared\Domain\ValueObject\Quantity"
+              use-column-prefix="false"
     />
 
     <many-to-one field="cart"

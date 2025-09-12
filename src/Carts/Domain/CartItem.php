@@ -9,7 +9,8 @@ namespace BGC\Checkout\Carts\Domain;
 use Exception;
 use BGC\Checkout\Carts\Domain\Exception\NonPositiveCartItemQuantity;
 use BGC\Checkout\Shared\Domain\ValueObject\Price;
-use BGC\Checkout\Carts\Domain\ValueObject\Product;
+use BGC\Checkout\Carts\Domain\Entity\Product;
+use BGC\Checkout\Shared\Domain\ValueObject\Quantity;
 use BGC\Checkout\Shared\Domain\ValueObject\Uuid;
 
 class CartItem
@@ -19,9 +20,8 @@ class CartItem
     public function __construct(
         private Uuid $id,
         private Product $product,
-        private int $quantity
+        private Quantity $quantity
     ) {
-        $this->ensureQuantityIsPositive();
     }
 
     public function setCart(?Cart $cart): void
@@ -49,37 +49,24 @@ class CartItem
         return $this->product;
     }
 
-    public function quantity(): int
+    public function quantity(): Quantity
     {
         return $this->quantity;
     }
 
-    public function modifyQuantity(int $newQuantity): void
+    public function modifyQuantity(Quantity $newQuantity): void
     {
-        $this->ensureQuantityIsPositive($newQuantity);
         $this->quantity = $newQuantity;
     }
 
-    public function increase(int $quantity): void
+    public function increase(int $increment): void
     {
-        $this->quantity += $quantity;
+        $this->quantity = $this->quantity->increase($increment);
     }
 
-    public function decrease(int $quantity): void
+    public function decrease(int $decrement): void
     {
-        $this->ensureQuantityIsPositive($this->quantity - $quantity);
-        $this->quantity -= $quantity;
-    }
-
-    private function ensureQuantityIsPositive(?int $quantity = null): void
-    {
-        if (!$quantity) {
-            $quantity = $this->quantity;
-        }
-
-        if ($quantity <= 0) {
-            throw new NonPositiveCartItemQuantity();
-        }
+        $this->quantity = $this->quantity->decrease($decrement);
     }
 
     public function toArray(): array

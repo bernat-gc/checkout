@@ -7,29 +7,16 @@
 
     <id name="id" type="uuid" length="36"/>
 
-    <field name="description" column="description" type="string" length="50"/>
+    <embedded name="description"
+              class="BGC\Checkout\Shared\Domain\ValueObject\ProductDescription"
+              column-prefix="product_"
+    />
 
     <embedded name="price"
               class="BGC\Checkout\Shared\Domain\ValueObject\Price"
               column-prefix="price_"
     />
 
-    <field name="createdAt" column="created_at" type="datetime_immutable">
-      <options>
-        <option name="default">CURRENT_TIMESTAMP</option>
-      </options>
-    </field>
-
-    <field name="updatedAt" column="updated_at" type="datetime_immutable">
-      <options>
-        <option name="default">CURRENT_TIMESTAMP</option>
-      </options>
-    </field>
-
-    <lifecycle-callbacks>
-      <lifecycle-callback type="prePersist" method="refreshTimestamps"/>
-      <lifecycle-callback type="preUpdate" method="refreshTimestamps"/>
-    </lifecycle-callbacks>
   </entity>
 
 </doctrine-mapping>

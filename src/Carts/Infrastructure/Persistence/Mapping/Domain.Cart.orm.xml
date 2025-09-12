@@ -20,22 +20,6 @@
       </cascade>
     </one-to-many>
 
-    <field name="createdAt" column="created_at" type="datetime_immutable">
-      <options>
-        <option name="default">CURRENT_TIMESTAMP</option>
-      </options>
-    </field>
-
-    <field name="updatedAt" column="updated_at" type="datetime_immutable">
-      <options>
-        <option name="default">CURRENT_TIMESTAMP</option>
-      </options>
-    </field>
-
-    <lifecycle-callbacks>
-      <lifecycle-callback type="prePersist" method="refreshTimestamps"/>
-      <lifecycle-callback type="preUpdate" method="refreshTimestamps"/>
-    </lifecycle-callbacks>
   </entity>
 
 </doctrine-mapping>

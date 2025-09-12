@@ -3,13 +3,14 @@
 namespace BGC\Checkout\Carts\Application\Command;
 
 use BGC\Checkout\Shared\Application\Handler\Command\CommandInterface;
+use BGC\Checkout\Shared\Domain\ValueObject\Quantity;
 use BGC\Checkout\Shared\Domain\ValueObject\Uuid;
 
 class ModifyCartItemCommand implements CommandInterface
 {
     private readonly Uuid $cartId;
     private readonly Uuid $cartItemId;
-    private readonly int $quantity;
+    private readonly Quantity $quantity;
 
     public function __construct(
         string $cartId,
@@ -18,7 +19,7 @@ class ModifyCartItemCommand implements CommandInterface
     ) {
         $this->cartId = new Uuid($cartId);
         $this->cartItemId = new Uuid($cartItemId);
-        $this->quantity = $quantity;
+        $this->quantity = new Quantity($quantity);
     }
 
     public function cartId(): Uuid
@@ -31,7 +32,7 @@ class ModifyCartItemCommand implements CommandInterface
         return $this->cartItemId;
     }
 
-    public function quantity(): int
+    public function quantity(): Quantity
     {
         return $this->quantity;
     }

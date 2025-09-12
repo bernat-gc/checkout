@@ -3,7 +3,8 @@
 namespace BGC\Checkout\Tests\ObjectMother;
 
 use BGC\Checkout\Shared\Domain\ValueObject\Price;
-use BGC\Checkout\Carts\Domain\ValueObject\Product;
+use BGC\Checkout\Carts\Domain\Entity\Product;
+use BGC\Checkout\Shared\Domain\ValueObject\ProductDescription;
 use BGC\Checkout\Shared\Domain\ValueObject\Uuid;
 
 class ProductMother
@@ -17,7 +18,7 @@ class ProductMother
 
         return new Product(
             new Uuid($id ?? $faker->uuid()),
-            $description ?? $faker->word(),
+            new ProductDescription($description ?? $faker->word()),
             $price ?? PriceMother::aPrice()
         );
     }
