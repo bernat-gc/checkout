@@ -5,7 +5,7 @@ SHELL_CMD = bash
 
 build:
 	@docker compose up --build -d
-	@docker exec $(APP_NAME) composer install
+	@docker exec $(APP_NAME) composer install --no-interaction --no-progress --prefer-dist
 
 test:
 	@docker exec $(APP_NAME) $(TEST_CMD)
@@ -18,3 +18,5 @@ in:
 
 clean:
 	@docker compose down
+
+.PHONY: build test testv in clean
