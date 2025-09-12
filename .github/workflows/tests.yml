@@ -1,0 +1,40 @@
+name: Run Tests
+
+on:
+  push: 
+    branches: [ main ]
+  pull_request:
+    branches: ["**"]
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker
+        uses: docker/setup-buildx-action@v3
+
+      # Composer cache
+      - name: Get Composer cache directory
+        id: composer-cache
+        run: |
+          echo "dir=$(docker run --rm -v ${{ github.workspace }}:/app -w /app composer:2 composer config cache-dir)" >> $GITHUB_OUTPUT
+
+      - name: Cache Composer
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      # Build and run test
+      - name: Build container and install dependencies
+        run: make build
+
+      - name: Run tests
+        run: make test
+  
