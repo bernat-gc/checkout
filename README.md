@@ -13,6 +13,10 @@ To start the project use the command:
 ```
 docker compose up --build -d
 ```
+To install the dependencies, run the command:
+```
+docker exec app composer install
+```
 
 Then the API will be available on `localhost:8000`.
 
@@ -20,6 +24,13 @@ To run the tests, use the command:
 ```
 docker exec app vendor/bin/codecept run
 ```
+
+These commands and some other have been integrated into a Makefile.
+- `make build` builds the container and install the dependencies with composer
+- `make test` executes the tests inside the container
+- `make testv` executes the tests in verbose mode
+- `make in` enters the container in a bash shell
+- `make clean` executes  `docker compose down`
 
 ## Model
 It has been modeled using a main bounded context of Carts, and bounded context for Products which it is not complete, and it is just for examplification.
